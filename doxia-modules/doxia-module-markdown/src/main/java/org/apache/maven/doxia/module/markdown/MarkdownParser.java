@@ -128,15 +128,18 @@ public class MarkdownParser
         throws IOException
     {
         String text = IOUtil.toString( source );
-        MutableDataHolder flexmarkOptions = PegdownOptionsAdapter.flexmarkOptions(
-                Extensions.ALL & ~( Extensions.HARDWRAPS | Extensions.ANCHORLINKS ) ).toMutable();
+
         ArrayList<Extension> extensions = new ArrayList<>();
+
+        MutableDataHolder flexmarkOptions = PegdownOptionsAdapter
+                .flexmarkOptions( Extensions.ALL & ~( Extensions.HARDWRAPS ) )
+                .toMutable();
         for ( Extension extension : flexmarkOptions.get( com.vladsch.flexmark.parser.Parser.EXTENSIONS ) )
         {
             extensions.add( extension );
         }
-
         extensions.add( FlexmarkDoxiaExtension.create() );
+
         flexmarkOptions.set( com.vladsch.flexmark.parser.Parser.EXTENSIONS, extensions );
         flexmarkOptions.set( HtmlRenderer.HTML_BLOCK_OPEN_TAG_EOL, false );
         flexmarkOptions.set( HtmlRenderer.HTML_BLOCK_CLOSE_TAG_EOL, false );
